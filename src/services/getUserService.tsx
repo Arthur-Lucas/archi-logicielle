@@ -26,10 +26,14 @@ const generateRandomUser = (id: string): User => {
 // Mock service to fetch a user
 export const getUserService = async (id: string): Promise<User | null> => {
   const supabase = await createClient();
+  console.log("ID passé à Supabase:", id, "Type:", typeof id);
+
   // Simulate an API call
-  const { data, error } = await supabase.from("users").select("*").single();
-  console.log("Data Supabase :", data);
-  console.log("ID Supabase :", id);
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", id)
+    .single();
   if (error) {
     console.error("Erreur Supabase :", error);
   } else {
