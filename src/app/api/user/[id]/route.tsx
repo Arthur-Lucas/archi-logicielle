@@ -7,7 +7,8 @@ export async function GET(
 ) {
   try {
     // Vérification de l'existence de l'ID dans params
-    if (!params.id) {
+    const { id } = await params;
+    if (!id) {
       return NextResponse.json(
         { error: "User ID is required" },
         { status: 400 }
@@ -15,7 +16,7 @@ export async function GET(
     }
 
     // Appel du service pour récupérer les données utilisateur
-    const user = await getUserService(params.id);
+    const user = await getUserService(id);
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

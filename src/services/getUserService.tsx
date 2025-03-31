@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { faker } from "@faker-js/faker";
+import { createClient } from "@/utils/supabase.utils";
 
 // Define the User schema using Zod
 const UserSchema = z.object({
@@ -23,11 +24,22 @@ const generateRandomUser = (id: string): User => {
 };
 
 // Mock service to fetch a user
-export const getUserService = async (id: string): Promise<User> => {
+export const getUserService = async (id: string): Promise<User | null> => {
+  const supabase = await createClient();
   // Simulate an API call
-  const data = generateRandomUser(id); // Simulate the response data
-
-  // Validate the response data with Zod
+  const { data, error } = await supabase.from("users").select("*").single();
+  console.log("Data Supabase :", data);
+  console.log("ID Supabase :", id);
+  if (error) {
+    console.error("Erreur Supabase :", error);
+  } else {
+    console.log("Données retournées :", data);
+  }
+  if (!data) {
+    // Si aucune donnée n'est trouvée, générer un utilisateur aléatoire
+    return null;
+  }
+  // Valider la réponse avec Zod
   const user = UserSchema.parse(data);
 
   return user;

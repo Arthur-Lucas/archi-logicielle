@@ -10,8 +10,8 @@ describe("getUserService", () => {
     expect(user).toHaveProperty("name");
     expect(user).toHaveProperty("email");
     expect(user).toHaveProperty("age");
-    expect(typeof user.name).toBe("string");
-    expect(typeof user.email).toBe("string");
-    expect(typeof user.age).toBe("number");
+    expect(typeof user?.name).toBe("string");
+    expect(typeof user?.email).toBe("string");
+    expect(typeof user?.age).toBe("number");
   });
 });
